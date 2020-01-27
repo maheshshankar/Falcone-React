@@ -1,0 +1,66 @@
+import React, { Component } from "react";
+// import RandomNumber from "./randomClass";
+// import UserForm from "./form";
+// import Props from "./props";
+// import ListData from "./list";
+import { userList } from "./userList";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import NavBar from "./navbar";
+import Home from "./home";
+import About from "./about";
+import Contact from "./contact";
+import UserDetails from "./user-details";
+import Falcone from "./falcone";
+// import { FalconeServices } from './services/falcone-service';
+// import {PlanetsProvider} from './context';
+import {getPlanets} from './redux/planetActions';
+import {connect} from 'react-redux';
+
+class App extends Component {
+  state = {
+    userList: userList,
+    planets: []
+  };
+  
+  removeUser = id => {
+    let updatedUserList = this.state.userList.filter(user => {
+      return user.id !== id;
+    });
+    this.setState({
+      userList: updatedUserList
+    });
+  };
+  render() {
+    return (
+      <BrowserRouter>
+        <div className="container">
+          <header className="App-header">
+            <h1>My APP</h1>
+          </header>
+          <NavBar />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/about" component={About} />
+            <Route path="/contact" component={Contact} />
+            <Route path="/users/:id" component={UserDetails} />
+            {/* <PlanetsProvider value={this.props.planets.length > 0 ? this.props.planets : []}> */}
+              <Route path="/falcone" component={Falcone} />
+            {/* </PlanetsProvider> */}
+          </Switch>
+          {/* <RandomNumber /> */}
+          {/* <UserForm updateList={this.updateUserList} /> */}
+          {/* <Props name="Learn Reacttt" /> */}
+          {/* <ListData userList={this.state.userList} removeUser={this.removeUser} /> */}
+        </div>
+      </BrowserRouter>
+    );
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getPlanets: dispatch(getPlanets())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(App);
